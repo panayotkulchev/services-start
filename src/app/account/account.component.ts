@@ -6,18 +6,20 @@ import {AccountsService} from '../accounts.service';
   selector: 'app-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css'],
-  providers: [LoggingService, AccountsService]
+  // providers: [LoggingService]
 })
 export class AccountComponent {
   @Input() account: { name: string, status: string };
   @Input() id: number;
   @Output() statusChanged = new EventEmitter<{ id: number, newStatus: string }>();
 
-  constructor(private logService: LoggingService, private accountService: AccountsService) {
+  constructor(private logService: LoggingService,
+              private accountService: AccountsService) {
   }
 
   onSetTo(status: string) {
     this.accountService.changeStatus(this.id, status);
-    this.logService.logStatusChange(status);
+    // this.logService.logStatusChange(status);
+    this.accountService.statusUpdated.emit(status);
   }
 }
